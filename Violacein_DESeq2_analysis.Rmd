@@ -1,0 +1,140 @@
+---
+title: "Violacein - DESeq2 Analysis notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+---
+
+```{r}
+# Loading Libraries
+library("DESeq2")
+library("ggplot2")
+library("tidyverse")
+library("tidyr")
+library("ggpubr")
+```
+
+### LOADING COUNT MATRIX AND SAMPLE INFO 
+```{r}
+#LOADING COUNT MATRIX AND DATA INFO
+
+counts <- as.matrix(read.csv("Violacein_CTR_counts.txt", sep = "\t", row.names = 1))
+
+metadata <- as.matrix(read.csv("metadata.tsv", sep = "\t", row.names = 1))
+
+row.names(metadata) <- colnames(counts)
+
+metadata <- metadata[,c("Treatment","Generations")]
+
+```
+
+```{r}
+metadata
+```
+
+### VIOLACEIN VS CONTROL, REDUCING THE EFFECT OF GENERATION TIMES
+```{r}
+# Construct a DESeqDataSet
+
+dds <- DESeqDataSetFromMatrix(countData = counts,
+                              colData = metadata,
+                              design = ~ Generations + Treatment)
+```
+
+
+```{r}
+#FILTERING ORFS WITH MINIMUN 10 COUNTS IN AT LEAST SIX SAMPLES
+
+filter <- rowSums(assay(dds) >= 10) >= 6
+dds <- dds[filter,]
+
+# SET REFERENCE LEVEL
+dds$Treatment <- factor(dds$Treatment, levels = c("CTR_DMSO0.5%","Violacein"))
+```
+
+
+```{r}
+# DIFFERENCIAL ABUNDANCE ANALYSIS
+
+dds <- DESeq(dds, sfType = "poscounts", test = "LRT", reduced = ~Generations , useT = FALSE)
+res <- results(dds)
+```
+
+```{r}
+#PRINCIPAL COMPONENT ANALYSIS FIGURE
+
+rld <- rlog(dds, blind = FALSE)
+
+pca_data <- plotPCA(rld, intgroup=c("Treatment", "Generations"), returnData=TRUE)
+percentVar <- round(100 * attr(pca_data, "percentVar"))
+pcaplot <- ggplot(pca_data, aes(PC1, PC2, color=Treatment, shape=Generations)) +
+  geom_point(size = 3) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  coord_fixed()
+
+pcaplot
+```
+
+```{r}
+# ORDERING RESULTS BY PADJ AND CREATING DATAFRAME
+
+resOrdered <- res[order(res$padj),]
+
+df <- resOrdered %>%
+  as.data.frame() %>%
+  rownames_to_column("ORF") %>%
+  arrange(abs(padj)) %>%
+  mutate(significative=if_else(padj<=.05, "yes", "no")) %>%
+  mutate(up=if_else(log2FoldChange<0, "DMSO", "drug"))
+
+
+df
+```
+
+
+```{r}
+# NUMBER OF ORFS (BARCODES) DIFFERENTIALY ABUNDANT (padj <= 0.05)
+
+paste("Number of significant ORFs  (padj <= 0.05):", nrow(subset(df, padj <= 0.05)))
+
+paste("Number of significant ORFs sig. dif. abundant in drug:", nrow(subset(df, up == "drug" & significative == "yes")))
+
+paste("Number of significant ORFs sig. dif. abundant in control (haploinsufficiency):", nrow(subset(df, up == "DMSO" & significative == "yes" )))
+
+```
+
+```{r}
+# CREATING MA PLOT FOR RESULTS 
+
+maplot <- ggmaplot(df, fdr = 0.05,  size = 1.5,fc=0, main = expression("Violacein vs Control (DMSO 0.5%)"),
+   palette = c("#B31B21", "#1465AC", "darkgray"), 
+   genenames = as.vector(df$ORF),
+   legend = "top", 
+   top=4,select.top.method = c("padj", "fc"),
+   font.label = c("bold", 10), label.rectangle = TRUE,
+   font.legend = "bold", 
+   font.main = "bold",
+   ggtheme = ggplot2::theme_minimal())
+
+maplot
+
+```
+
+```{r}
+plotcts <- plotCounts(dds, gene = which.min(res$padj), intgroup = c("Treatment", "Generations"), returnData = TRUE)
+x <- ggplot(plotcts, aes(x = Treatment, y = count)) +
+  geom_jitter(height = 0, width = 0.07, size = 3 ,aes(color = Generations)) +
+  scale_y_continuous(trans = "log10") +
+  labs(title = row.names(res[which.min(res$padj),]), x = "Condition", y = "Normalized counts") +
+  theme_bw()
+x
+```
+
+```{r}
+sessionInfo()
+```
+
+
