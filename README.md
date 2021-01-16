@@ -10,13 +10,10 @@ Files are listed in the order the analysis should be executed after quality cont
 
 * DADA2_denoising_snakefile.smk = Snakemake file for running denoising script with DADA2 on multiple sequencing read files.
 * DADA2_barcodes_denoising.R = R script for denoising of sequencing reads with DADA2.
-* Levenshtein_distance_filtering.ipynb = Jupyter Notebook with Python code for filtering denoised sequenced barcodes using Levenshtein distance.
-* Levenshtein_distance_filtering.html = Html version of Python Notebook with code for filtering denoised sequenced barcodes using Levenshtein distance.
+* Levenshtein_distance_filtering.ipynb = Jupyter Notebook (.ipynb) with Python code for filtering denoised sequenced barcodes using Levenshtein distance. Notebook also available in html version (.html) to view in web browser. 
 * asvtab_barcodes.txt = Count values for ASVs (denoised  sequenced barcodes) resulting from DADA2, this file is used in the "Levenshtein_distance_filtering" Python notebook.
 * yeast_pool_barcodes_info.tsv = Table containing barcode sequences and which mutated ORF they represent. File used in Levenshtein_distance_filtering Python notebook.
-* Violacein_DESeq2_analysis.Rmd = RStudio notebook with R code for differential abundance analysis of barcoded mutant yeast strains treated with violacein or DMSO, using DESeq2.
-* Violacein_DESeq2_analysis.nb.html = Html version of RStudio notebook with R code for differential abundance analysis of barcoded mutant yeast strains treated with violacein or DMSO, using DESeq2
-
+* Violacein_DESeq2_analysis = RStudio notebook (.Rmd) with R code for differential abundance analysis of barcoded mutant yeast strains treated with violacein or DMSO, using DESeq2.  Notebook also available in html version (.html) to view in web browser. 
 
 ## Raw data
 
