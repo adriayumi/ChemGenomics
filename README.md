@@ -6,7 +6,7 @@ Data and Code used for analysis of Chemical Genomics Profiling data associated w
 
 ## File Description
 
-Files are listed in the order the analysis should be executed.
+Files are listed in the order the analysis should be executed after quality control of reads.
 
 * DADA2_denoising_snakefile.smk = Snakemake file for running denoising script with DADA2 on multiple sequencing read files.
 * DADA2_barcodes_denoising.R = R script for denoising of sequencing reads with DADA2.
@@ -16,3 +16,8 @@ Files are listed in the order the analysis should be executed.
 * yeast_pool_barcodes_info.tsv = Table containing barcode sequences and which mutated ORF they represent. File used in Levenshtein_distance_filtering Python notebook.
 * Violacein_DESeq2_analysis.Rmd = RStudio notebook with R code for differential abundance analysis of barcoded mutant yeast strains treated with violacein or DMSO, using DESeq2.
 * Violacein_DESeq2_analysis.nb.html = Html version of RStudio notebook with R code for differential abundance analysis of barcoded mutant yeast strains treated with violacein or DMSO, using DESeq2
+
+
+## Raw data
+
+Raw data (sequencing reads) used in this work is available at SRA with Accession number: PRJNA689872
