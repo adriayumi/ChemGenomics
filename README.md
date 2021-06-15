@@ -1,10 +1,10 @@
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.4443836-blue.svg)](https://doi.org/10.5281/zenodo.4443836)
 
-# ChemGenomics
+# Chemical Genomics
 Data, Code and Methods used for analysis of Chemical Genomics Profiling data associated with the work "Violacein-induced chaperone system collapse underlies multi-stage antiplasmodial activity" by Tavella et al., accepted for publication by ACS Infectious Diseases. 
 
 Tavella et al. (2021). "Violacein-induced chaperone system collapse underlies multi-stage antiplasmodial activity". ACS Infectious Diseases.
-https://dx.doi.org/10.1021/acsinfecdis.0c0045
+https://pubs.acs.org/doi/10.1021/acsinfecdis.0c00454
 
 ## Raw data
 
