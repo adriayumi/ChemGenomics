@@ -1,4 +1,5 @@
 # conda environment: qc-processing
+# run fastqc and multiqc on raw fastq files
 
 workdir: '/opt_hd/adrielle/chemical_genomics/QC_reports'
 
@@ -16,6 +17,8 @@ rule fastqc:
         temp(expand('{{sample}}_R{n}_001_fastqc.zip', n=['1', '2']))
     params:
         output_directory = './'
+    conda:
+        "qc-processing.yml"
     shell:
         'fastqc -o {params.output_directory} {input}'
 
@@ -29,6 +32,8 @@ rule multiqc:
         title = 'barcodes samples FastQC report',
         filename = 'barcodes_samples_fastqc_report',
         output_directory = 'multiqc'
+    conda:
+        "qc-processing.yml"
     shell:
         'multiqc --interactive -o {params.output_directory} -i "{params.title}" -n {params.filename} {input}'
 
