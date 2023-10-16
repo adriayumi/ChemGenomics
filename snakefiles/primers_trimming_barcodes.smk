@@ -1,8 +1,8 @@
 # conda environment: qc-processing
 
-workdir: '/opt_hd/adrielle/chemical_genomics_2020/02-trimming_adapters'
+workdir: '/opt_hd/adrielle/chemical_genomics/02-trimming_adapters'
 
-SAMPLES, = glob_wildcards('/opt_hd/adrielle/chemical_genomics_2020/00-data/{sample}_L006_R1_001.fastq.gz')
+SAMPLES, = glob_wildcards('/opt_hd/adrielle/chemical_genomics/00-data/{sample}_L006_R1_001.fastq.gz')
 
 rule all:
     input:
@@ -10,11 +10,11 @@ rule all:
 
 rule cutadapt_5prime:
     input:
-        R1 = '/opt_hd/adrielle/chemical_genomics_2020/00-data/{sample}_L006_R1_001.fastq.gz',
-        R2 = '/opt_hd/adrielle/chemical_genomics_2020/00-data/{sample}_L006_R2_001.fastq.gz'
+        R1 = '/opt_hd/adrielle/chemical_genomics/00-data/{sample}_L006_R1_001.fastq.gz',
+        R2 = '/opt_hd/adrielle/chemical_genomics/00-data/{sample}_L006_R2_001.fastq.gz'
     output:
-        R1 = temp('/opt_hd/adrielle/chemical_genomics_2020/02-trimming_adapters/{sample}_trimmed_5prime_1.fastq.gz'),
-        R2 = temp('/opt_hd/adrielle/chemical_genomics_2020/02-trimming_adapters/{sample}_trimmed_5prime_2.fastq.gz')
+        R1 = temp('/opt_hd/adrielle/chemical_genomics/02-trimming_adapters/{sample}_trimmed_5prime_1.fastq.gz'),
+        R2 = temp('/opt_hd/adrielle/chemical_genomics/02-trimming_adapters/{sample}_trimmed_5prime_2.fastq.gz')
     log:
         'cutadapt_logs/{sample}_trimmed_primers_5prime.log'
     threads: 6
@@ -32,11 +32,11 @@ rule cutadapt_5prime:
 
 rule cutadapt_3prime:
     input:
-        R1 = '/opt_hd/adrielle/chemical_genomics_2020/02-trimming_adapters/{sample}_trimmed_5prime_1.fastq.gz',
-        R2 = '/opt_hd/adrielle/chemical_genomics_2020/02-trimming_adapters/{sample}_trimmed_5prime_2.fastq.gz'
+        R1 = '/opt_hd/adrielle/chemical_genomics/02-trimming_adapters/{sample}_trimmed_5prime_1.fastq.gz',
+        R2 = '/opt_hd/adrielle/chemical_genomics/02-trimming_adapters/{sample}_trimmed_5prime_2.fastq.gz'
     output:
-        R1 = '/opt_hd/adrielle/chemical_genomics_2020/02-trimming_adapters/{sample}_trimmed_1.fastq.gz',
-        R2 = '/opt_hd/adrielle/chemical_genomics_2020/02-trimming_adapters/{sample}_trimmed_2.fastq.gz'
+        R1 = '/opt_hd/adrielle/chemical_genomics/02-trimming_adapters/{sample}_trimmed_1.fastq.gz',
+        R2 = '/opt_hd/adrielle/chemical_genomics/02-trimming_adapters/{sample}_trimmed_2.fastq.gz'
     log:
         'cutadapt_logs/{sample}_trimmed_primers_3prime.log'
     threads: 6
@@ -53,7 +53,7 @@ rule cutadapt_3prime:
 
 rule fastqc:
     input:q
-        expand('/opt_hd/adrielle/chemical_genomics_2020/02-trimming_adapters/{{sample}}_trimmed_{n}.fastq.gz', n=['1','2'])
+        expand('/opt_hd/adrielle/chemical_genomics/02-trimming_adapters/{{sample}}_trimmed_{n}.fastq.gz', n=['1','2'])
     output:
         temp(expand('{{sample}}_trimmed_{n}_fastqc.html', n=['1', '2'])),
         temp(expand('{{sample}}_trimmed_{n}_fastqc.zip', n=['1', '2']))
