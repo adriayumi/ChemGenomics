@@ -18,7 +18,7 @@ rule fastqc:
     params:
         output_directory = './'
     conda:
-        "qc-processing.yml"
+        "../env/qc-processing.yml"
     shell:
         'fastqc -o {params.output_directory} {input}'
 
@@ -33,7 +33,7 @@ rule multiqc:
         filename = 'barcodes_samples_fastqc_report',
         output_directory = 'multiqc'
     conda:
-        "qc-processing.yml"
+        "../env/qc-processing.yml"
     shell:
         'multiqc --interactive -o {params.output_directory} -i "{params.title}" -n {params.filename} {input}'
 
