@@ -19,7 +19,7 @@ rule cutadapt_5prime:
         'cutadapt_logs/{sample}_trimmed_primers_5prime.log'
     threads: 6
     conda:
-        "qc-processing.yml"
+        "../env/qc-processing.yml"
     shell:
         'cutadapt \
         -j {threads} \
@@ -43,7 +43,7 @@ rule cutadapt_3prime:
         'cutadapt_logs/{sample}_trimmed_primers_3prime.log'
     threads: 6
     conda:
-        "qc-processing.yml"
+        "../env/qc-processing.yml"
     shell:
         'cutadapt \
         -j {threads} \
@@ -64,7 +64,7 @@ rule fastqc:
     params:
         output_directory = './'
     conda:
-        "qc-processing.yml"
+        "../env/qc-processing.yml"
     shell:
         'fastqc -o {params.output_directory} {input}'
 
@@ -80,6 +80,6 @@ rule multiqc:
         title = 'paired barcodes samples primer trimming report',
         filename = 'paired_samples_primer_trimming_report'
     conda:
-        "qc-processing.yml"
+        "../env/qc-processing.yml"
     shell:
         'multiqc --interactive -o ./ -i "{params.title}" -n {params.filename} {input}'
