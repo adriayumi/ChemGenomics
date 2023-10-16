@@ -23,5 +23,7 @@ rule dada2:
         TRACK = 'track_barcodes.txt',
         ASVTAB = 'asvtab_barcodes.txt',
         ASV_FASTA = 'asv_barcodes.fasta'
+    conda:
+        "../env/dada2.yml" 
     script:
-        'DADA2_barcodes_denoising.R'
+        '../scripts/DADA2_barcodes_denoising.R'

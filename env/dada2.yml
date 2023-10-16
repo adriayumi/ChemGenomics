@@ -1,0 +1,13 @@
+name: dada2
+
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - _r-mutex=1.0.0=anacondar_1
+  - snakemake-minimal=5.2.4
+  - r-base=3.6.1
+  - r-tidyverse
+  - bioconductor-dada2=1.14.0
